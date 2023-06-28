@@ -3,10 +3,11 @@ package com.revok.project.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.revok.project.database.Database
 import com.revok.project.models.StringModel
 
 
-class ViewModel : ViewModel() {
+class ViewModel(private val myDatabase: Database) : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is Listviews Fragment"
@@ -24,11 +25,14 @@ class ViewModel : ViewModel() {
     }
 
     private fun initMovieList() {
-        val movieList: MutableList<StringModel> = ArrayList()
-        movieList.add(StringModel("Item 1"))
-        movieList.add(StringModel("Item 2"))
-        movieList.add(StringModel("Item 3"))
-        mutableLiveData!!.value = movieList
+//        val movieList: MutableList<StringModel> = ArrayList()
+//        movieList.add(StringModel("Item 1"))
+//        movieList.add(StringModel("Item 2"))
+//        movieList.add(StringModel("Item 3"))
+
+        val data = myDatabase.yourDao().getAllData()
+
+        mutableLiveData = data
     }
 
     fun deleteMovie(position: Int) {

@@ -4,7 +4,9 @@ import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,8 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.revok.project.adapter.MovieListAdapter
 import com.revok.project.databinding.ActivityMainBinding
 import com.revok.project.models.StringModel
-import com.revok.project.view_model.ViewModel
 import com.revok.project.utilities.Utils
+import com.revok.project.view_model.ViewModel
 
 class MainActivity : AppCompatActivity(), MovieListAdapter.MovieClickInterface,
     MovieListAdapter.MovieDoubleClickInterface {
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity(), MovieListAdapter.MovieClickInterface,
         recyclerView.adapter = adapter
 
         btnFab.setOnClickListener {
-//            root.findNavController().navigate(R.id.action_nav_listviews_to_listviewsInputFragment)
+            showInputDialog()
         }
 
         btnDelete.setOnClickListener {
@@ -74,6 +76,32 @@ class MainActivity : AppCompatActivity(), MovieListAdapter.MovieClickInterface,
             Toast.makeText(applicationContext, "Item is already in the list", Toast.LENGTH_SHORT)
                 .show()
         }
+    }
+
+    private fun showInputDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Enter a value")
+
+        // Set up the input field
+        val input = EditText(this)
+        builder.setView(input)
+
+        // Set up the buttons
+        builder.setPositiveButton("OK") { dialog, _ ->
+            val enteredValue = input.text.toString()
+            // Process the entered value
+            Toast.makeText(
+                applicationContext,
+                enteredValue,
+                Toast.LENGTH_SHORT
+            ).show()
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
     }
 
     override fun onDoubleClick(position: Int) {
